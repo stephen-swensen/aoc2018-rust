@@ -11,5 +11,5 @@ fn day1() -> i32 {
         .split("\n")
         .map(|x| x.parse::<i32>().unwrap_or(0))
         .sum();
-    return sum;
+    sum
 }
