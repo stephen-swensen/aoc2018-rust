@@ -32,3 +32,22 @@ pub fn part1() -> i32 {
 
     twos * threes
 }
+
+pub fn part2() -> Option<(String, String)> {
+    let txt = fs::read_to_string("inputs/day2.txt").unwrap();
+    let lines: Vec<&str> = txt.lines().collect();
+
+    for (i,line) in lines.iter().enumerate() {
+        for line2 in &lines[i+1..] {
+            let count = line.chars().zip(line2.chars())
+                .filter(|(c1,c2)| c1 != c2)
+                .count();
+
+            if count == 1 {
+                return Some((line.to_string(),line2.to_string()));
+            }
+        }
+    }
+
+    None
+}
