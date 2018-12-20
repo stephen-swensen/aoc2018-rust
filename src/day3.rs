@@ -71,13 +71,10 @@ pub fn part1() -> usize {
     overlap.len()
 }
 
-pub fn part2() -> Option<String> {
-    let txt = fs::read_to_string("inputs/day3.txt").unwrap();
-    let lines = txt.lines();
-    let claims: Vec<Claim> = lines.map(|line| line.parse().unwrap()).collect();
+fn get_overlap(claims: &Vec<Claim>) -> HashSet<(i32,i32)> {
     let mut all = HashSet::<(i32,i32)>::new();
     let mut overlap = HashSet::<(i32,i32)>::new();
-    for c in &claims {
+    for c in claims {
         for coord in c.coords() {
             if all.contains(&coord) {
                 overlap.insert(coord);
@@ -86,6 +83,14 @@ pub fn part2() -> Option<String> {
             }
         }
     }
+    overlap
+}
+
+pub fn part2() -> Option<String> {
+    let txt = fs::read_to_string("inputs/day3.txt").unwrap();
+    let lines = txt.lines();
+    let claims: Vec<Claim> = lines.map(|line| line.parse().unwrap()).collect();
+    let overlap = get_overlap(&claims);
     for c in &claims {
         let mut has_overlap = false;
         for coord in c.coords() {
