@@ -6,6 +6,7 @@ use std::str::Lines;
 use maplit::*;
 use std::str::FromStr;
 use std::num::ParseIntError;
+use std::collections::HashSet;
 
 #[derive(Debug)]
 struct Claim {
@@ -25,7 +26,6 @@ impl FromStr for Claim {
             .split(|c| delimiters.contains(&c))
             .filter(|s| s != &"")
             .collect();
-        println!("{:?}", parts);
         let parse_at = |i: usize| { 
             let s: &str = parts.get(i).unwrap();
             s.parse::<i32>()
@@ -40,12 +40,33 @@ impl FromStr for Claim {
     }
 }
 
-pub fn part1() -> Result<i32, ParseIntError> {
+impl Claim {
+    fn coords(self) -> Vec<(i32,i32)> {
+        let mut v: Vec<(i32,i32)> = vec![];
+        for x in self.left..(self.left+self.width) {
+            for y in self.top..(self.top+self.height) {
+                let c = (x,y);
+                v.push(c);
+            }
+        }
+        v
+    }
+}
+
+pub fn part1() -> usize {
     let txt = fs::read_to_string("inputs/day3.txt").unwrap();
     let lines = txt.lines();
+    let mut all = HashSet::<(i32,i32)>::new();
+    let mut overlap = HashSet::<(i32,i32)>::new();
     for line in lines {
-        let c: Claim = line.parse()?;
-        println!("{:?}", c)
+        let c: Claim = line.parse().unwrap();
+        for coord in c.coords() {
+            if all.contains(&coord) {
+                overlap.insert(coord);
+            } else {
+                all.insert(coord);
+            }
+        }
     }
-    Ok(0)
+    overlap.len()
 }
