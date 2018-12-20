@@ -53,22 +53,11 @@ impl Claim {
     }
 }
 
-pub fn part1() -> usize {
+fn parse_claims() -> Vec<Claim> {
     let txt = fs::read_to_string("inputs/day3.txt").unwrap();
     let lines = txt.lines();
-    let mut all = HashSet::<(i32,i32)>::new();
-    let mut overlap = HashSet::<(i32,i32)>::new();
-    for line in lines {
-        let c: Claim = line.parse().unwrap();
-        for coord in c.coords() {
-            if all.contains(&coord) {
-                overlap.insert(coord);
-            } else {
-                all.insert(coord);
-            }
-        }
-    }
-    overlap.len()
+    let claims: Vec<Claim> = lines.map(|line| line.parse().unwrap()).collect();
+    claims
 }
 
 fn get_overlap(claims: &Vec<Claim>) -> HashSet<(i32,i32)> {
@@ -86,10 +75,14 @@ fn get_overlap(claims: &Vec<Claim>) -> HashSet<(i32,i32)> {
     overlap
 }
 
+pub fn part1() -> usize {
+    let claims = parse_claims();
+    let overlap = get_overlap(&claims);
+    overlap.len()
+}
+
 pub fn part2() -> Option<String> {
-    let txt = fs::read_to_string("inputs/day3.txt").unwrap();
-    let lines = txt.lines();
-    let claims: Vec<Claim> = lines.map(|line| line.parse().unwrap()).collect();
+    let claims = parse_claims();
     let overlap = get_overlap(&claims);
     for c in &claims {
         let mut has_overlap = false;
