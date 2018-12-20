@@ -41,7 +41,7 @@ impl FromStr for Claim {
 }
 
 impl Claim {
-    fn coords(self) -> Vec<(i32,i32)> {
+    fn coords(&self) -> Vec<(i32,i32)> {
         let mut v: Vec<(i32,i32)> = vec![];
         for x in self.left..(self.left+self.width) {
             for y in self.top..(self.top+self.height) {
@@ -69,4 +69,34 @@ pub fn part1() -> usize {
         }
     }
     overlap.len()
+}
+
+pub fn part2() -> String {
+    let txt = fs::read_to_string("inputs/day3.txt").unwrap();
+    let lines = txt.lines();
+    let claims: Vec<Claim> = lines.map(|line| line.parse().unwrap()).collect();
+    let mut all = HashSet::<(i32,i32)>::new();
+    let mut overlap = HashSet::<(i32,i32)>::new();
+    for c in &claims {
+        for coord in c.coords() {
+            if all.contains(&coord) {
+                overlap.insert(coord);
+            } else {
+                all.insert(coord);
+            }
+        }
+    }
+    for c in &claims {
+        let mut has_overlap = false;
+        for coord in c.coords() {
+            if overlap.contains(&coord) {
+                has_overlap = true;
+                break;
+            } 
+        }
+        if !has_overlap {
+            return c.id.to_string();
+        }
+    }
+    "".to_string()
 }
