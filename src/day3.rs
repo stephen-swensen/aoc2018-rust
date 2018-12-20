@@ -71,7 +71,7 @@ pub fn part1() -> usize {
     overlap.len()
 }
 
-pub fn part2() -> String {
+pub fn part2() -> Option<String> {
     let txt = fs::read_to_string("inputs/day3.txt").unwrap();
     let lines = txt.lines();
     let claims: Vec<Claim> = lines.map(|line| line.parse().unwrap()).collect();
@@ -95,8 +95,8 @@ pub fn part2() -> String {
             } 
         }
         if !has_overlap {
-            return c.id.to_string();
+            return Some(c.id.to_string());
         }
     }
-    "".to_string()
+    None
 }
