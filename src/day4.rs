@@ -7,6 +7,7 @@ use maplit::*;
 use std::str::FromStr;
 use std::collections::HashSet;
 use regex::Regex;
+use crate::utils;
 
 #[derive(Debug)]
 pub enum LogEvent {
