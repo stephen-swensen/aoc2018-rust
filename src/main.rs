@@ -5,5 +5,5 @@ mod day4;
 
 fn main() {
     let x = day4::part1();
-    println!("Result: {:?}", x);
+    println!("Result: {:#?}", x);
 }
