@@ -56,6 +56,7 @@ fn parse_log() -> Vec<LogEntry> {
         let mins = caps[5].parse().unwrap();
         log_entries.push(LogEntry { raw:line.to_string(), year, month, day, hrs, mins, log_event });
     }
+    log_entries.sort_by(|a,b| b.raw.cmp(&a.raw));
     log_entries
 }
 
