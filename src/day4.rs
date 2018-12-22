@@ -10,14 +10,14 @@ use regex::Regex;
 use crate::utils;
 
 #[derive(Debug)]
-pub enum LogEvent {
+enum LogEvent {
     BeginsShift(i32),
     WakesUp,
     FallsAsleep,
 }
 
 #[derive(Debug)]
-pub struct LogEntry {
+struct LogEntry {
     raw: String,
     year: i32,
     month: i32,
@@ -25,6 +25,13 @@ pub struct LogEntry {
     hrs: i32,
     mins: i32,
     log_event: LogEvent
+}
+
+#[derive(Debug)]
+pub struct SleepDuration {
+    guard_id: i32,
+    start: i32,
+    duration: i32,
 }
 
 fn parse_log() -> Vec<LogEntry> {
@@ -57,12 +64,27 @@ fn parse_log() -> Vec<LogEntry> {
         let mins = caps[5].parse().unwrap();
         log_entries.push(LogEntry { raw:line.to_string(), year, month, day, hrs, mins, log_event });
     }
-    log_entries.sort_by(|a,b| b.raw.cmp(&a.raw));
+    log_entries.sort_by(|a,b| a.raw.cmp(&b.raw));
     log_entries
 }
 
-pub fn part1() -> Vec<LogEntry> {
-    parse_log()
+pub fn part1() -> Vec<SleepDuration> {
+    let log_entries = parse_log();
+    let mut sleep_durations: Vec<SleepDuration> = vec![];
+    let mut guard_id = 0;
+    let mut sleep_start = 0;
+    for le in log_entries {
+        println!("{:#?}", le);
+        match le.log_event {
+            LogEvent::BeginsShift(id) => guard_id = id,
+            LogEvent::FallsAsleep => sleep_start = le.mins,
+            LogEvent::WakesUp => {
+                let duration = le.mins - sleep_start;
+                sleep_durations.push(SleepDuration { guard_id, start: sleep_start, duration})
+            }
+        }
+    }
+    sleep_durations
 }
 
 pub fn part2() -> i32 {
