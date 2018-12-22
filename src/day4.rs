@@ -91,9 +91,7 @@ pub fn part1() -> i32 {
     let guard_sleep_durations = sleep_durations.iter().group_by_key(|sd| sd.guard_id);
     let guard = guard_sleep_durations
         .into_iter()
-        .max_by_key(|(_,value)| -> i32 {
-            value.iter().sum_by_key(|sd| sd.duration)
-        });
+        .max_by_key(|(_,value)| value.iter().sum_by_key(|sd| sd.duration));
 
     println!("{:#?}", guard);
     0
