@@ -8,6 +8,7 @@ use std::str::FromStr;
 use std::collections::HashMap;
 use regex::Regex;
 use crate::utils::VecExt;
+use crate::utils::IteratorExt;
 
 #[derive(Debug)]
 enum LogEvent {
@@ -88,11 +89,11 @@ fn collect_sleep_durations(log_entries: &Vec<LogEntry>) -> Vec<SleepDuration> {
 pub fn part1() -> i32 {
     let log_entries = parse_log();
     let sleep_durations = collect_sleep_durations(&log_entries);
-    let guard_sleep_durations = sleep_durations.group_by(|sd| sd.guard_id);
+    let guard_sleep_durations = sleep_durations.group_by_key(|sd| sd.guard_id);
     let guard = guard_sleep_durations
         .into_iter()
         .max_by_key(|(_,value)| -> i32 {
-            value.iter().map(|sd| sd.duration).sum()
+            value.iter().sum_by_key(|sd| sd.duration)
         });
 
     println!("{:#?}", guard);
