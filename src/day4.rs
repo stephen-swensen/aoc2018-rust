@@ -68,8 +68,7 @@ fn parse_log() -> Vec<LogEntry> {
     log_entries
 }
 
-pub fn part1() -> Vec<SleepDuration> {
-    let log_entries = parse_log();
+fn collect_sleep_durations(log_entries: &Vec<LogEntry>) -> Vec<SleepDuration> {
     let mut sleep_durations: Vec<SleepDuration> = vec![];
     let mut guard_id = 0;
     let mut sleep_start = 0;
@@ -84,6 +83,12 @@ pub fn part1() -> Vec<SleepDuration> {
             }
         }
     }
+    sleep_durations
+}
+
+pub fn part1() -> Vec<SleepDuration> {
+    let log_entries = parse_log();
+    let sleep_durations = collect_sleep_durations(&log_entries);
     sleep_durations
 }
 
