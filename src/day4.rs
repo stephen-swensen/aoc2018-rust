@@ -5,9 +5,9 @@ use std::fs;
 use std::str::Lines;
 use maplit::*;
 use std::str::FromStr;
-use std::collections::HashSet;
+use std::collections::HashMap;
 use regex::Regex;
-use crate::utils;
+use crate::utils::VecExt;
 
 #[derive(Debug)]
 enum LogEvent {
@@ -73,7 +73,6 @@ fn collect_sleep_durations(log_entries: &Vec<LogEntry>) -> Vec<SleepDuration> {
     let mut guard_id = 0;
     let mut sleep_start = 0;
     for le in log_entries {
-        println!("{:#?}", le);
         match le.log_event {
             LogEvent::BeginsShift(id) => guard_id = id,
             LogEvent::FallsAsleep => sleep_start = le.mins,
@@ -86,10 +85,18 @@ fn collect_sleep_durations(log_entries: &Vec<LogEntry>) -> Vec<SleepDuration> {
     sleep_durations
 }
 
-pub fn part1() -> Vec<SleepDuration> {
+pub fn part1() -> i32 {
     let log_entries = parse_log();
     let sleep_durations = collect_sleep_durations(&log_entries);
-    sleep_durations
+    let guard_sleep_durations = sleep_durations.group_by(|sd| sd.guard_id);
+    let guard = guard_sleep_durations
+        .into_iter()
+        .max_by_key(|(_,value)| -> i32 {
+            value.iter().map(|sd| sd.duration).sum()
+        });
+
+    println!("{:#?}", guard);
+    0
 }
 
 pub fn part2() -> i32 {
