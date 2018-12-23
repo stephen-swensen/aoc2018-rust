@@ -28,7 +28,7 @@ struct LogEntry {
 }
 
 #[derive(Debug)]
-pub struct SleepDuration {
+struct SleepDuration {
     guard_id: i32,
     start: i32,
     duration: i32,
@@ -85,16 +85,12 @@ fn collect_sleep_durations(log_entries: &Vec<LogEntry>) -> Vec<SleepDuration> {
     sleep_durations
 }
 
-fn get_guard_sleep_durations() -> HashMap<i32,Vec<SleepDuration>> {
+pub fn part1() -> i32 {
     let log_entries = parse_log("inputs/day4.txt");
     let sleep_durations = collect_sleep_durations(&log_entries);
     let guard_sleep_durations = sleep_durations
-        .into_iter().group_by_key(|sd| sd.guard_id);
-    guard_sleep_durations
-}
+        .iter().group_by_key(|sd| sd.guard_id);
 
-pub fn part1() -> i32 {
-    let guard_sleep_durations = get_guard_sleep_durations();
     let best_guard = guard_sleep_durations
         .iter()
         .max_by_key(|(_,value)| value.iter().sum_by_key(|sd| sd.duration))
@@ -113,5 +109,16 @@ pub fn part1() -> i32 {
 }
 
 pub fn part2() -> i32 {
-    0
+    let log_entries = parse_log("inputs/day4.txt");
+    let sleep_durations = collect_sleep_durations(&log_entries);
+    let ((guard_id, min),_) = sleep_durations
+        .iter()
+        .map(|sd| (sd.start..sd.start + sd.duration).map(move |m| (sd.guard_id, m)))
+        .flatten()
+        .group_by_key(|x| *x)
+        .into_iter()
+        .max_by_key(|(_,x)| x.len())
+        .unwrap();
+    
+    guard_id * min
 }
