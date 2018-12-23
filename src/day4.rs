@@ -34,8 +34,8 @@ pub struct SleepDuration {
     duration: i32,
 }
 
-fn parse_log() -> Vec<LogEntry> {
-    let txt = fs::read_to_string("inputs/day4.txt").unwrap();
+fn parse_log(filename: &str) -> Vec<LogEntry> {
+    let txt = fs::read_to_string(filename).unwrap();
     let lines = txt.lines();
     let date_regx = Regex::new(r"(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})").unwrap();
     let id_regx = Regex::new(r"#(\d*) ").unwrap();
@@ -85,10 +85,16 @@ fn collect_sleep_durations(log_entries: &Vec<LogEntry>) -> Vec<SleepDuration> {
     sleep_durations
 }
 
-pub fn part1() -> i32 {
-    let log_entries = parse_log();
+fn get_guard_sleep_durations() -> HashMap<i32,Vec<SleepDuration>> {
+    let log_entries = parse_log("inputs/day4.txt");
     let sleep_durations = collect_sleep_durations(&log_entries);
-    let guard_sleep_durations = sleep_durations.iter().group_by_key(|sd| sd.guard_id);
+    let guard_sleep_durations = sleep_durations
+        .into_iter().group_by_key(|sd| sd.guard_id);
+    guard_sleep_durations
+}
+
+pub fn part1() -> i32 {
+    let guard_sleep_durations = get_guard_sleep_durations();
     let best_guard = guard_sleep_durations
         .iter()
         .max_by_key(|(_,value)| value.iter().sum_by_key(|sd| sd.duration))
