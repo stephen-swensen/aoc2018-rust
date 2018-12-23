@@ -89,11 +89,11 @@ pub fn part1() -> i32 {
     let log_entries = parse_log();
     let sleep_durations = collect_sleep_durations(&log_entries);
     let guard_sleep_durations = sleep_durations.iter().group_by_key(|sd| sd.guard_id);
-    let guard = guard_sleep_durations
+    let best_guard = guard_sleep_durations
         .iter()
         .max_by_key(|(_,value)| value.iter().sum_by_key(|sd| sd.duration))
         .unwrap();
-    let best_min = guard.1
+    let best_min = best_guard.1
         .iter()
         .map(|sd| (sd.start..sd.start + sd.duration))
         .flatten()
@@ -102,8 +102,8 @@ pub fn part1() -> i32 {
         .max_by_key(|(_,v)| v.len())
         .unwrap().0;
 
-    println!("guard_id = {}, best_min = {}", guard.0, best_min);
-    guard.0 * best_min
+    println!("guard_id = {}, best_min = {}", best_guard.0, best_min);
+    best_guard.0 * best_min
 }
 
 pub fn part2() -> i32 {
