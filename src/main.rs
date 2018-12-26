@@ -7,9 +7,15 @@ mod day4b;
 mod day5;
 mod day5b;
 
+use time::PreciseTime;
+
 fn main() {
-    let x = day5b::part1();
+    let start = PreciseTime::now();
+
+    let x = day5b::part2();
     //let x: Vec<i32> = vec![1,2,3,4];
     //let x = &x[1..];
     println!("Result: {:#?}", x);
+    let end = PreciseTime::now();
+    println!("Elapsed: {} seconds", start.to(end));
 }
