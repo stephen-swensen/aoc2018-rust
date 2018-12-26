@@ -4,8 +4,12 @@
 use std::fs;
 
 fn react(mut chars: Vec<char>) -> Vec<char> {
+    //we use offset to give us a major optimization: don't reiterate leading part of
+    //vector that we know is already collapsed
+    let mut offset = 0;
     'outer: loop {
-        'inner: for (i, c1) in chars.iter().enumerate() {
+        'inner: for (i, c1) in chars[offset..].iter().enumerate() {
+            let i = i + offset;
             if i == chars.len() - 1 {
                 break 'outer;
             } else {
@@ -13,6 +17,7 @@ fn react(mut chars: Vec<char>) -> Vec<char> {
                 if c1 != c2 && c1.to_ascii_lowercase() == c2.to_ascii_lowercase() {
                     chars.remove(i);
                     chars.remove(i); //we use i again because of shift left above
+                    offset = if i == 0 { 0 } else { i-1 };
                     break 'inner;
                 }
             }
