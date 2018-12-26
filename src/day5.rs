@@ -28,6 +28,19 @@ pub fn part1() -> usize {
     chars.len()
 }
 
-pub fn part2() {
+pub fn part2() -> usize {
+    let pairs: Vec<(char,char)> = (b'a'..=b'z')
+        .map(|c| c as char)
+        .map(|c| (c,c.to_ascii_uppercase()))
+        .collect();
 
+    let input = fs::read_to_string("inputs/day5.txt").unwrap();
+
+    let r = pairs
+        .iter()
+        .map(|(p1,p2)| react(input.chars().filter(|c| c != p1 && c!= p2).collect::<Vec<char>>()).len())
+        .min()
+        .unwrap();
+
+    r
 }

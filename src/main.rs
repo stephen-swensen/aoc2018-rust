@@ -7,6 +7,6 @@ mod day4b;
 mod day5;
 
 fn main() {
-    let x = day5::part1();
+    let x = day5::part2();
     println!("Result: {:#?}", x);
 }
