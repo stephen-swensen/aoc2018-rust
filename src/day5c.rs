@@ -22,8 +22,7 @@ fn react(chars: &mut Vec<Option<char>>) {
         let c1 = get_at_i32(chars, i);
         let c2 = get_at_i32(chars, j);
         match (c1,c2) {
-            (_,None) => return,
-            (_,Some(None)) => return,
+            (_,None) | (_,Some(None)) => return,
             (None,_) => {
                 i = j;
                 j = j+1;
