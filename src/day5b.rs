@@ -8,15 +8,23 @@ fn does_react(c1: char, c2: char) -> bool {
 }
 
 fn chain_react(chars: &mut Vec<Option<char>>, i: usize, j:usize) -> usize {
-    let i = i - 1;
-    let j = j + 1;
-    match (chars.get(i), chars.get(j)) {
-        (Some(Some(c1)), Some(Some(c2))) => {
-            chars[i] = None;
-            chars[j] = None;
-            return chain_react(chars, i,j);
-        },
-        _ => j
+    let mut i = i;
+    let mut j = j;
+    loop {
+        i = i - 1;
+        j = j + 1;
+        match (chars.get(i), chars.get(j)) {
+            (Some(Some(c1)), Some(Some(c2))) => {
+                if does_react(*c1,*c2) {
+                    chars[i] = None;
+                    chars[j] = None;
+                    continue
+                } else {
+                    return j
+                }
+            },
+            _ => return j
+        }
     }
 }
 
