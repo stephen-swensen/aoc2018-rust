@@ -34,6 +34,8 @@ fn react(chars: &mut Vec<Option<char>>) {
         let c1 = chars[i].unwrap();
         let c2 = chars[i+1].unwrap();
         if does_react(c1,c2) {
+            chars[i] = None;
+            chars[i+1] = None;
             i = chain_react(chars, i, i+1);
         } else {
             i += 1;
