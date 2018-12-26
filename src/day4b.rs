@@ -61,7 +61,7 @@ fn collect_sleep_durations(log_entries: &Vec<LogEntry>) -> Vec<SleepDuration> {
     let mut sleep_start = 0;
     for le in log_entries {
         match le {
-            LogEntry::BeginsShift { guard_id, min } => id = *guard_id,
+            LogEntry::BeginsShift { guard_id, min:_ } => id = *guard_id,
             LogEntry::FallsAsleep { min } => sleep_start = *min,
             LogEntry::WakesUp { min } => {
                 let duration = min - sleep_start;
