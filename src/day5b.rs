@@ -30,7 +30,7 @@ fn chain_react(chars: &mut Vec<Option<char>>, i: usize, j:usize) -> usize {
 
 fn react(chars: &mut Vec<Option<char>>) {
     let mut i = 0;
-    while i < chars.len() - 1 {
+    while i < chars.len() - 2 {
         let c1 = chars[i].unwrap();
         let c2 = chars[i+1].unwrap();
         if does_react(c1,c2) {
