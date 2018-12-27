@@ -8,12 +8,12 @@ fn react(mut chars: Vec<char>) -> Vec<char> {
     //vector that we know is already collapsed
     let mut offset = 0;
     'outer: loop {
-        'inner: for (i, c1) in chars[offset..].iter().enumerate() {
+        'inner: for (i, &c1) in chars[offset..].iter().enumerate() {
             let i = i + offset;
             if i == chars.len() - 1 {
                 break 'outer;
             } else {
-                let c2 = chars.get(i+1).unwrap();
+                let c2 = chars[i+1];
                 if c1 != c2 && c1.to_ascii_lowercase() == c2.to_ascii_lowercase() {
                     chars.remove(i);
                     chars.remove(i); //we use i again because of shift left above

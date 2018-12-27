@@ -51,7 +51,7 @@ pub fn part1() -> usize {
     //let input = String::from("dabAcCaCBAcCcaDA");
     let mut chars: Vec<Option<char>> = input.chars().map(|x| Some(x)).collect();
     react(&mut chars);
-    println!("{:?}", chars);
+    //println!("{:?}", chars);
     chars.iter().filter(|x| x.is_some()).count()
 }
 

@@ -14,7 +14,7 @@ use time::PreciseTime;
 fn main() {
     let start = PreciseTime::now();
 
-    let x = day5d::part2();
+    let x = day5::part2();
     //let x: Vec<i32> = vec![1,2,3,4];
     //let x = &x[1..];
     println!("Result: {:#?}", x);
