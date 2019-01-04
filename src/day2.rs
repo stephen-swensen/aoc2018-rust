@@ -1,9 +1,9 @@
 #![allow(dead_code)]
 #![allow(unused_imports)]
 
+use maplit::*;
 use std::fs;
 use std::str::Lines;
-use maplit::*;
 
 pub fn part1() -> i32 {
     let txt = fs::read_to_string("inputs/day2.txt").unwrap();
@@ -19,7 +19,7 @@ pub fn part1() -> i32 {
             match count {
                 2 => has_two = true,
                 3 => has_three = true,
-                _ => ()
+                _ => (),
             }
         }
         if has_two {
@@ -37,14 +37,16 @@ pub fn part2() -> Option<(String, String)> {
     let txt = fs::read_to_string("inputs/day2.txt").unwrap();
     let lines: Vec<&str> = txt.lines().collect();
 
-    for (i,line) in lines.iter().enumerate() {
-        for line2 in &lines[i+1..] {
-            let count = line.chars().zip(line2.chars())
-                .filter(|(c1,c2)| c1 != c2)
+    for (i, line) in lines.iter().enumerate() {
+        for line2 in &lines[i + 1..] {
+            let count = line
+                .chars()
+                .zip(line2.chars())
+                .filter(|(c1, c2)| c1 != c2)
                 .count();
 
             if count == 1 {
-                return Some((line.to_string(),line2.to_string()));
+                return Some((line.to_string(), line2.to_string()));
             }
         }
     }
