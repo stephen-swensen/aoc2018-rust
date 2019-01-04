@@ -32,3 +32,18 @@ pub fn part2() -> Option<(usize,i32)> {
     }
     None
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_part1() {
+        assert_eq!(part1(), 400);
+    }
+
+    #[test]
+    fn test_part2() {
+        assert_eq!(part2(), Some((143679, 232)));
+    }
+}
